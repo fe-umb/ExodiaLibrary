@@ -2,9 +2,7 @@ module github.com/lcmps/ExodiaLibrary
 
 go 1.17
 
-replace(
-	
-	)
+replace github.com/lcmps/ExodiaLibrary => github.com/fe-umb/ExodiaLibrary v0.0.0-20220325213253-00649e106332
 
 require (
 	github.com/gin-gonic/gin v1.7.7
