@@ -1,6 +1,11 @@
 package model
 
-import "github.com/lib/pq"
+import (
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/lib/pq"
+)
 
 // CardList is a struct that represents the default database table
 type Cards struct {
@@ -20,4 +25,18 @@ type Cards struct {
 	Atk           int           `gorm:"type: integer; not null" json:"atk"`
 	Def           int           `gorm:"type: integer; not null" json:"def"`
 	Level         int           `gorm:"type: integer; not null" json:"level"`
+}
+
+type Portfolios struct {
+	ID          uuid.UUID `gorm:"type:uuid; primary key; not null; default:uuid_generate_v4()" json:"id"`
+	Name        string    `gorm:"type: text; not null" json:"name"`
+	Description string    `gorm:"type: text;" json:"description"`
+	Cover       string    `gorm:"type: text;" json:"cover"`
+	CreatedAt   time.Time `gorm:"type:timestamp; not null; default:now()" json:"created_at"`
+	UpdatedAt   time.Time `gorm:"type:timestamp; not null; default:now()" json:"updated_at"`
+}
+
+type PortfolioCards struct {
+	Card      Cards      `gorm:"foreignKey: ID; type: integer; not null" json:"card_id"`
+	Portfolio Portfolios `gorm:"foreignKey: ID; type: uuid; not null" json:"portfolio_id"`
 }

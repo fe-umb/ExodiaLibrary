@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/google/uuid"
 	"github.com/lcmps/ExodiaLibrary/app"
 	"github.com/lcmps/ExodiaLibrary/model"
 	"gorm.io/driver/postgres"
@@ -39,10 +40,58 @@ func InitConnection() (Connection, error) {
 
 func (conn *Connection) CreateTables() {
 	conn.DB.AutoMigrate(model.Cards{})
+	conn.DB.AutoMigrate(model.Portfolios{})
+	conn.DB.AutoMigrate(model.PortfolioCards{})
+
+	conn.createForeignKeys()
+	conn.enableUUID()
+}
+
+func (conn *Connection) createForeignKeys() {
+
+	cardsKey := conn.DB.Migrator().HasConstraint(model.PortfolioCards{}, "portfolio_cards_fk")
+	portfKey := conn.DB.Migrator().HasConstraint(model.PortfolioCards{}, "portfolio_portfolios_fk")
+
+	if !cardsKey {
+		conn.DB.Exec(`
+		ALTER TABLE
+		public.portfolio_cards
+	ADD CONSTRAINT 
+		portfolio_cards_fk FOREIGN KEY (card) 
+	REFERENCES
+		public.cards(id) ON DELETE CASCADE;`)
+	}
+
+	if !portfKey {
+		conn.DB.Exec(`
+		ALTER TABLE
+		public.portfolio_cards 
+	ADD CONSTRAINT 
+		portfolio_portfolios_fk FOREIGN KEY (portfolio) 
+	REFERENCES 
+	public.portfolios(id) ON DELETE CASCADE;`)
+	}
+
+}
+
+func (conn *Connection) AddPortfolio(name, desc, cover string) {
+	var pfl = model.Portfolios{
+		ID:          uuid.New(),
+		Name:        name,
+		Description: desc,
+		Cover:       cover,
+	}
+
+	conn.DB.Table("portfolios").Create(&pfl)
+}
+
+func (conn *Connection) enableUUID() {
+	conn.DB.Exec(`
+	CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+	`)
 }
 
 func (conn *Connection) ImportCards() {
-	conn.CreateTables()
 
 	en, fr, pt := app.GetAllCardsLanguages()
 
