@@ -1,9 +1,0 @@
-VERSION: 0.1
-DB_USER: atem
-DB_PASS: osiris
-DB_HOST: db
-DB_NAME: ygo_app
-DB_SCHEMA: app
-DB_PORT: 5432
-WEB_PORT: 9001
-ENV: debug
