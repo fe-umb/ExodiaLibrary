@@ -2,6 +2,8 @@ package app
 
 import (
 	"bytes"
+	"crypto/rand"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/url"
@@ -86,4 +88,10 @@ func buildFileName(urlInput string) (string, error) {
 
 	fileName := segments[len(segments)-1]
 	return fileName, nil
+}
+
+func RandToken() string {
+	b := make([]byte, 32)
+	rand.Read(b)
+	return base64.StdEncoding.EncodeToString(b)
 }

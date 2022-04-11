@@ -6,4 +6,7 @@ DB_NAME: ygo_app
 DB_SCHEMA: app
 DB_PORT: 5432
 WEB_PORT: 9001
+CLIENT_ID: id
+CLIENT_SECRET: secret
+REDIRECT_URL: http://localhost:9001/auth/google/callback
 ENV: debug

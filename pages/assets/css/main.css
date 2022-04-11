@@ -63,3 +63,17 @@ background-color: #18191A;
     background: #18191A;
 }
 }
+
+.index-page .page-header,
+.login-page .page-header {
+    min-height: 50vh;
+    height: calc(70vh - 10px);
+}
+
+.dropdown-menu.dropdown-with-icons.show{
+    left: -15px;
+}
+
+.g-sign{
+    text-align: center;
+}

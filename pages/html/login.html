@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{ template "head.html" .}}
+
+<body class="login-page">
+    <!-- Navbar -->
+    {{ template "navbar.html" .}}
+    <!-- End Navbar -->
+    <div class="wrapper">
+        <div class="page-header header-filter">
+            <div class="container">
+                <div class="content-center brand">
+                    <h3>My Portfoli-Oh</h3>
+                    <div>
+                        Lorem ipsum dolor sit amet
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="section section-basic">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm col-md col-lg">
+                            <div class="g-sign">
+                                <a href="{{ .callback }}">
+                                    <img class="img-fluid" src="/img/btn_google_light.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ template "scripts.html" .}}
+</body>
+
+</html>
