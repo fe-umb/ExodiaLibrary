@@ -40,3 +40,19 @@ type PortfolioCards struct {
 	Card      Cards      `gorm:"foreignKey: ID; type: integer; not null" json:"card_id"`
 	Portfolio Portfolios `gorm:"foreignKey: ID; type: uuid; not null" json:"portfolio_id"`
 }
+
+type Users struct {
+	ID          uuid.UUID `gorm:"type:uuid; primary key; not null; default:uuid_generate_v4()" json:"id"`
+	CreatedAt   time.Time `gorm:"type:timestamp; not null; default:now()" json:"created_at"`
+	Name        string    `gorm:"type: text; not null" json:"name"`
+	Email       string    `gorm:"type: text; not null" json:"email"`
+	Picture     string    `gorm:"type: text;" json:"picture"`
+	Locale      string    `gorm:"type: text;" json:"locale"`
+	AccountType string    `gorm:"type: text;" json:"accountType"`
+}
+
+type UserPortfolios struct {
+	Name      string     `gorm:"type: text; not null" json:"name"`
+	User      Users      `gorm:"foreignKey: ID; type: uuid; not null" json:"user_id"`
+	Portfolio Portfolios `gorm:"foreignKey: ID; type: uuid; not null" json:"portfolio_id"`
+}

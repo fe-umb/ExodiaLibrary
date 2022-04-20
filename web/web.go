@@ -2,10 +2,11 @@ package web
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -80,6 +81,7 @@ func (App *WebApp) Host() {
 	r.GET("/random", GetRandomCards)
 	r.GET("/auth/google/callback", authHandler)
 	r.GET("/login", loginHandler)
+	r.GET("/user/:id", userHandler)
 
 	// Pages
 	r.GET("/", home)
@@ -155,13 +157,14 @@ func loginHandler(ctx *gin.Context) {
 		http.StatusOK,
 		"login.html",
 		gin.H{
-			"title":    "𓂀 Exodia Library 𓂀",
+			"title":    "𓂀 Login 𓂀",
 			"callback": getLoginURL(state),
 		},
 	)
 }
 
 func authHandler(ctx *gin.Context) {
+	var userData model.Profile
 	session := sessions.Default(ctx)
 	retrievedState := session.Get("state")
 	if retrievedState != ctx.Query("state") {
@@ -183,6 +186,45 @@ func authHandler(ctx *gin.Context) {
 	}
 	defer email.Body.Close()
 	data, _ := ioutil.ReadAll(email.Body)
-	log.Println("Email body: ", string(data))
-	ctx.Status(http.StatusOK)
+
+	json.Unmarshal(data, &userData)
+
+	cn, err := db.InitConnection()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	user := cn.GetUserByEmail(userData.Email)
+	if user.Email == "" {
+		picUrl := strings.Replace(userData.Picture, "=s96-c", "", -1)
+		user = cn.AddUser(userData.Name, userData.Email, picUrl, userData.Locale, "google")
+	}
+	ctx.Redirect(http.StatusFound, fmt.Sprintf("/user/%s", user.ID))
+}
+
+func userHandler(ctx *gin.Context) {
+
+	id := ctx.Param("id")
+
+	cn, err := db.InitConnection()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	user := cn.GetUserByID(id)
+
+	ctx.HTML(
+		http.StatusOK,
+		"user.html",
+		gin.H{
+			"title":   user.Name,
+			"email":   user.Email,
+			"name":    user.Name,
+			"locale":  user.Locale,
+			"picture": user.Picture + "=s150",
+			"account": user.AccountType,
+		},
+	)
 }

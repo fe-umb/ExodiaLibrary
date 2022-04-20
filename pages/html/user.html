@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{ template "head.html" .}}
+
+<body class="user-page">
+    <!-- Navbar -->
+    {{ template "navbar.html" .}}
+    <!-- End Navbar -->
+    <div class="wrapper">
+        <div class="page-header header-filter">
+            <div class="container">
+            </div>
+        </div>
+        <div class="main">
+            <div class="section section-basic">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm col-md col-lg">
+                            <div class="card">
+                                <div class="card-header picture">
+                                    <div class="user-picture">
+                                        <img class="img-fluid rounded-circle shadow-lg" src="{{ .picture }}" alt="">
+                                    </div>
+                                    <div class="user-name">
+                                        <h1> {{ .name }} </h1>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content tab-space">
+                                        <div>
+                                            <p>
+                                                {{ .name }}
+                                            </p>
+                                            <p>
+                                                {{ .email }}
+                                            </p>
+                                            <p>
+                                                {{ .locale }}
+                                            </p>
+                                            <p>
+                                                {{ .account }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ template "scripts.html" .}}
+</body>
+
+</html>

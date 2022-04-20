@@ -77,3 +77,26 @@ background-color: #18191A;
 .g-sign{
     text-align: center;
 }
+
+.user-page .page-header{
+    max-height: 15vh;
+    min-height: 15vh;
+}
+
+.card{
+    background-color: #282828;
+}
+
+.card-header.picture{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user-picture{
+    margin: 0 0 1rem 0;
+}
+
+.user-name h1{
+    margin: 0;
+}
