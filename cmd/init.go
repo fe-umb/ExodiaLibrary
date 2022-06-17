@@ -16,6 +16,7 @@ var initCmd = &cobra.Command{
 		if err != nil {
 			fmt.Println(err.Error())
 		}
+		conn.CreateTables()
 		conn.ImportCards()
 
 		w, err := web.New()

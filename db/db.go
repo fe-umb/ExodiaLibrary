@@ -37,6 +37,8 @@ func InitConnection() (Connection, error) {
 }
 
 func (conn *Connection) CreateTables() {
+	conn.enableUUID()
+
 	conn.DB.AutoMigrate(model.Cards{})
 	conn.DB.AutoMigrate(model.Portfolios{})
 	conn.DB.AutoMigrate(model.PortfolioCards{})
@@ -44,7 +46,6 @@ func (conn *Connection) CreateTables() {
 	conn.DB.AutoMigrate(model.UserPortfolios{})
 
 	conn.createForeignKeys()
-	conn.enableUUID()
 }
 
 func (conn *Connection) createForeignKeys() {
